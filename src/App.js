@@ -8,14 +8,15 @@ import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import  { useField } from './hooks'
+import { createNotification } from './reducers/notificationReducer'
+import { connect } from 'react-redux'
 
-
-const App = () => {
+const App = (props) => {
   const [blogs, setBlogs] = useState([])
   const username = useField('text')
   const password = useField('password')
   const [errorMessage, setErrorMessage] = useState(null)
-  const [message, setMessage] = useState(null)
+  //const [message, setMessage] = useState(null)
   const [user, setUser] = useState(null)
   const newTitle = useField('text')
   const newAuthor = useField('text')
@@ -93,12 +94,9 @@ const App = () => {
         newTitle.reset()
         newAuthor.reset()
         newUrl.reset()
-        setMessage(
-          `'${returnedBlog.title}' was added`
+        props.createNotification(
+          `'${returnedBlog.title}' was added`, 5
         )
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
       })
       .catch(error => {
         // Server returns an error message
@@ -151,12 +149,9 @@ const App = () => {
         })
       let copy = blogs.filter(blog => blog.id !== id)
       setBlogs(copy)
-      setMessage(
-        `Blog '${title}' was removed`
+      props.createNotification(
+        `Blog '${title}' was removed`, 5
       )
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
     }
   }
 
@@ -167,9 +162,7 @@ const App = () => {
 
         <h2>Log in to application</h2>
 
-        <Notification
-          message={message}
-        />
+        <Notification />
         <ErrorMessage
           errorMessage={errorMessage}
         />
@@ -186,9 +179,7 @@ const App = () => {
   return (
     <div className='main'>
       <h2>Blogs</h2>
-      <Notification
-        message={message}
-      />
+      <Notification />
       <ErrorMessage
         errorMessage={errorMessage}
       />
@@ -215,4 +206,21 @@ const App = () => {
   )
 }
 
-export default App
+const mapStateToProps = (state) => {
+  return {
+    //anecdotes: state.anecdotes,
+    notification: state.notification
+  }
+}
+
+const mapDispatchToProps = {
+  //createAnecdote,
+  createNotification
+}
+
+const ConnectedApp = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
+
+export default ConnectedApp
