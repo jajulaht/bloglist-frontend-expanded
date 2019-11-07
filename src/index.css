@@ -1,0 +1,34 @@
+h1 {
+  color: green;
+  font-style: italic;
+}
+
+li {
+  color: grey;
+  padding-top: 3px;
+  font-size: 15px;
+}
+
+.note {
+  color: rgb(34, 146, 77);
+  background: rgb(189, 243, 188);
+  font-size: 20px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(134, 201, 160);
+  border-radius: 2px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.error {
+  color: rgb(146, 34, 34);
+  background: rgb(243, 188, 188);
+  font-size: 20px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(201, 134, 134);
+  border-radius: 2px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
