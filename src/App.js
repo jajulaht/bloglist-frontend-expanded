@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import blogService from './services/blogs'
 import Notification from './components/Notification'
 import ErrorMessage from './components/ErrorMessage'
@@ -9,27 +9,28 @@ import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import  { useField } from './hooks'
 import { createNotification } from './reducers/notificationReducer'
+import { createErrorMsg } from './reducers/errorReducer'
+import { initializeBlogs, createBlog } from './reducers/blogReducer'
+import { setUser } from './reducers/userReducer'
 import { connect } from 'react-redux'
 
 const App = (props) => {
-  const [blogs, setBlogs] = useState([])
+  //const [blogs, setBlogs] = useState([])
   const username = useField('text')
   const password = useField('password')
-  const [errorMessage, setErrorMessage] = useState(null)
-  //const [message, setMessage] = useState(null)
-  const [user, setUser] = useState(null)
+  //const [errorMessage, setErrorMessage] = useState(null)
+  //const [user, setUser] = useState(null)
   const newTitle = useField('text')
   const newAuthor = useField('text')
   const newUrl = useField('text')
   const blogFormRef = React.createRef()
+  const initialize = props.initializeBlogs
+  const setUser = props.setUser
 
   // Get blogs from db
   useEffect(() => {
-    blogService
-      .getAll().then(initialBlogs => {
-        setBlogs(initialBlogs)
-      })
-  }, [])
+    initialize()
+  },[initialize])
 
   // Check if log info saved in local storage
   useEffect(() => {
@@ -39,7 +40,7 @@ const App = (props) => {
       setUser(user)
       blogService.setToken(user.token)
     }
-  }, [])
+  }, [setUser])
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -53,23 +54,20 @@ const App = (props) => {
       )
 
       blogService.setToken(user.token)
-      setUser(user)
+      props.setUser(user)
       username.reset()
       password.reset()
     } catch (exception) {
-      setErrorMessage('Wrong username or password')
+      props.createErrorMsg('Wrong username or password', 5)
       username.reset()
       password.reset()
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
     }
   }
 
   // eslint-disable-next-line no-unused-vars
-  const handleLogout = async (event) => {
+  const handleLogout = (event) => {
     window.localStorage.removeItem('loggedBlogappUser')
-    setUser(null)
+    props.setUser(null)
   }
 
   // Add a blog, change response's user to match blogs state
@@ -81,92 +79,29 @@ const App = (props) => {
       author: newAuthor.value,
       url: newUrl.value
     }
-    blogService
-      .create(blogObject)
-      .then(returnedBlog => {
-        const changedReturnedBlog = {
-          ...returnedBlog, user: {
-            id: returnedBlog.user,
-            username: user.username,
-            name: user.name }
-        }
-        setBlogs(blogs.concat(changedReturnedBlog))
-        newTitle.reset()
-        newAuthor.reset()
-        newUrl.reset()
-        props.createNotification(
-          `'${returnedBlog.title}' was added`, 5
-        )
-      })
-      .catch(error => {
-        // Server returns an error message
-        console.log(error.response.data)
-        setErrorMessage(
-          `${error.response.data.error}`
-        )
-        setTimeout(() => {
-          console.log('Error: ', error)
-          setErrorMessage(null)
-        }, 5000)
-      })
-  }
-
-  // Update blog likes, change response's user to match blogs state
-  const updateBlogLikes = (searchId) => {
-    const blogToUpdate = blogs.find(({ id }) => id === searchId)
-    const newLikes = blogToUpdate.likes + 1
-    const changedBlog = { ...blogToUpdate, likes: newLikes }
-
-    blogService
-      .update(blogToUpdate.id, changedBlog)
-      .then(response => {
-        const changedResponse = {
-          ...response, user: {
-            id: blogToUpdate.user.id,
-            username: blogToUpdate.user.username,
-            name: blogToUpdate.user.name }
-        }
-        setBlogs(blogs.map(blog => blog.id !== blogToUpdate.id ? blog : changedResponse))
-      })
-      .catch(error => {
-        setBlogs(blogs.filter(p => p.id !== blogToUpdate.id))
-        console.log('error', error)
-      })
-  }
-
-  // Deleting the blog
-  const deleteBlog = (id, title, author) => {
-  // console.log('Attr', id, name)
-    if (window.confirm(`Do you really want to delete blog ${title}? by ${author}`)) {
-      blogService
-        .deleteThis(id)
-        .then(returnedData => {
-          console.log('Delete status response', returnedData)
-        })
-        .catch(error => {
-          alert(`the blog '${title}' was already deleted from server`)
-          console.log('error', error)
-        })
-      let copy = blogs.filter(blog => blog.id !== id)
-      setBlogs(copy)
+    try {
+      props.createBlog(blogObject, props.user)
+      newTitle.reset()
+      newAuthor.reset()
+      newUrl.reset()
       props.createNotification(
-        `Blog '${title}' was removed`, 5
+        `'${blogObject.title}' was added`, 5
+      )
+    }
+    catch (error) {
+      props.createErrorMsg(
+        `Something went wrong: ${error}`, 5
       )
     }
   }
 
   // Conditional rendering
-  if (user === null) {
+  if (props.user === null) {
     return (
       <div className='main'>
-
         <h2>Log in to application</h2>
-
         <Notification />
-        <ErrorMessage
-          errorMessage={errorMessage}
-        />
-
+        <ErrorMessage />
         <LoginForm
           handleLogin={handleLogin}
           username={username}
@@ -180,11 +115,9 @@ const App = (props) => {
     <div className='main'>
       <h2>Blogs</h2>
       <Notification />
-      <ErrorMessage
-        errorMessage={errorMessage}
-      />
+      <ErrorMessage />
 
-      <p>{user.name} logged in <button onClick={handleLogout}>Logout</button></p>
+      <p>{props.user.name} logged in <button onClick={handleLogout}>Logout</button></p>
 
       <Togglable buttonLabel="New blog note" ref={blogFormRef}>
         <BlogForm
@@ -195,12 +128,7 @@ const App = (props) => {
         />
       </Togglable>
 
-      <Blogs
-        blogs={blogs}
-        updateBlogLikes={updateBlogLikes}
-        deleteBlog={deleteBlog}
-        user={user}
-      />
+      <Blogs />
 
     </div>
   )
@@ -208,14 +136,18 @@ const App = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    //anecdotes: state.anecdotes,
-    notification: state.notification
+    blogs: state.blogs,
+    notification: state.notification,
+    user: state.user,
   }
 }
 
 const mapDispatchToProps = {
-  //createAnecdote,
-  createNotification
+  initializeBlogs,
+  createNotification,
+  createErrorMsg,
+  setUser,
+  createBlog
 }
 
 const ConnectedApp = connect(

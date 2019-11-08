@@ -1,15 +1,23 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
-const ErrorMessage = ({ errorMessage }) => {
-  if (errorMessage === null) {
+const ErrorMessage = (props) => {
+  if (props.errorMessage === null) {
     return null
   }
 
   return (
     <div className="error">
-      {errorMessage}
+      {props.errorMessage}
     </div>
   )
 }
 
-export default ErrorMessage
+const mapStateToProps = (state) => {
+  return {
+    errorMessage: state.error
+  }
+}
+
+const ConnectedErrorMessage = connect(mapStateToProps)(ErrorMessage)
+export default ConnectedErrorMessage

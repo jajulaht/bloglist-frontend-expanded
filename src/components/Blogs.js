@@ -1,13 +1,14 @@
 import React from 'react'
 import Blog from './Blog'
+import { connect } from 'react-redux'
 
-const Blogs = ({ blogs, updateBlogLikes, deleteBlog, user }) => {
-  if (blogs.length === null) {
+const Blogs = (props) => {
+  if (props.blogs.length === null) {
     return <div>Loading...</div>
   }
   else {
     // Arrange blogs by likes in descending order
-    const arrangedBlogs = blogs.sort((a, b) => (a.likes < b.likes) ? 1 : -1)
+    const arrangedBlogs = props.blogs.sort((a, b) => (a.likes < b.likes) ? 1 : -1)
     // Map blogs array data to rows
     const rows = () => arrangedBlogs.map(blog =>
       <React.Fragment key={blog.id}>
@@ -17,11 +18,11 @@ const Blogs = ({ blogs, updateBlogLikes, deleteBlog, user }) => {
           url={blog.url}
           likes={blog.likes}
           name={blog.user.name}
-          updateBlogLikes={updateBlogLikes}
+          updateBlogLikes={props.updateBlogLikes}
           id={blog.id}
-          deleteBlog={deleteBlog}
+          deleteBlog={props.deleteBlog}
           username={blog.user.username}
-          user={user}
+          user={props.user}
         /><br />
       </React.Fragment>
     )
@@ -33,4 +34,19 @@ const Blogs = ({ blogs, updateBlogLikes, deleteBlog, user }) => {
   }
 }
 
-export default Blogs
+const mapStateToProps = (state) => {
+  return {
+    blogs: state.blogs,
+  }
+}
+
+const mapDispatchToProps = {
+  //
+}
+
+const ConnectedBlogs = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Blogs)
+
+export default ConnectedBlogs
