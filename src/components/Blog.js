@@ -40,15 +40,29 @@ const Blog = (props) => {
 
   const updateBlogLikes = (searchId) => {
     const blogToUpdate = props.blogs.find(({ id }) => id === searchId)
+    console.log('haettu', blogToUpdate)
     const newLikes = blogToUpdate.likes + 1
     const changedBlog = { ...blogToUpdate, likes: newLikes }
-
-    props.likeOf(changedBlog)
+    try {
+      props.likeOf(changedBlog)
+    }
+    catch (error) {
+      props.createErrorMsg(
+        `Something went wrong: ${error}`, 5
+      )
+    }
   }
 
   const handleDelete = (id, title, author) => {
-    props.deleteBlog(id, title, author)
-    props.createNotification(`Blog '${title}' was removed`, 5)
+    try {
+      props.deleteBlog(id, title, author)
+      props.createNotification(`Blog '${title}' was removed`, 5)
+    }
+    catch (error) {
+      props.createErrorMsg(
+        `Something went wrong: ${error}`, 5
+      )
+    }
   }
 
   // Show or hide remove button

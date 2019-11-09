@@ -49,13 +49,15 @@ const blogReducer = (state = [], action) => {
   case 'INIT_BLOGS':
     return action.data
   case 'NEW_BLOG': {
+    console.log('action', action.data)
     const returnedBlog = action.data.blog
     const preparedBlog = {
       ...returnedBlog, user: {
-        id: action.data.user.id,
+        id: action.data.blog.user,
         username: action.data.user.username,
         name: action.data.user.name }
     }
+    console.log('storeen', preparedBlog)
     return state.concat(preparedBlog)
   }
   case 'LIKE': {

@@ -15,11 +15,8 @@ import { setUser } from './reducers/userReducer'
 import { connect } from 'react-redux'
 
 const App = (props) => {
-  //const [blogs, setBlogs] = useState([])
   const username = useField('text')
   const password = useField('password')
-  //const [errorMessage, setErrorMessage] = useState(null)
-  //const [user, setUser] = useState(null)
   const newTitle = useField('text')
   const newAuthor = useField('text')
   const newUrl = useField('text')
@@ -54,7 +51,7 @@ const App = (props) => {
       )
 
       blogService.setToken(user.token)
-      props.setUser(user)
+      setUser(user)
       username.reset()
       password.reset()
     } catch (exception) {
@@ -67,7 +64,7 @@ const App = (props) => {
   // eslint-disable-next-line no-unused-vars
   const handleLogout = (event) => {
     window.localStorage.removeItem('loggedBlogappUser')
-    props.setUser(null)
+    setUser(null)
   }
 
   // Add a blog, change response's user to match blogs state
@@ -127,9 +124,7 @@ const App = (props) => {
           newUrl={newUrl}
         />
       </Togglable>
-
       <Blogs />
-
     </div>
   )
 }

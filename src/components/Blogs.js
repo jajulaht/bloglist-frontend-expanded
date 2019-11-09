@@ -18,9 +18,7 @@ const Blogs = (props) => {
           url={blog.url}
           likes={blog.likes}
           name={blog.user.name}
-          updateBlogLikes={props.updateBlogLikes}
           id={blog.id}
-          deleteBlog={props.deleteBlog}
           username={blog.user.username}
           user={props.user}
         /><br />
@@ -37,6 +35,7 @@ const Blogs = (props) => {
 const mapStateToProps = (state) => {
   return {
     blogs: state.blogs,
+    user: state.user
   }
 }
 
