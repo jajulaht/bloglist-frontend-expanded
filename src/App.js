@@ -13,6 +13,12 @@ import { createErrorMsg } from './reducers/errorReducer'
 import { initializeBlogs, createBlog } from './reducers/blogReducer'
 import { setUser } from './reducers/userReducer'
 import { connect } from 'react-redux'
+import {
+  BrowserRouter as Router,
+  Route, Link, Redirect, withRouter
+} from 'react-router-dom'
+import Users from './components/Users'
+import { initializeUsers } from './reducers/usersReducer'
 
 const App = (props) => {
   const username = useField('text')
@@ -23,11 +29,17 @@ const App = (props) => {
   const blogFormRef = React.createRef()
   const initialize = props.initializeBlogs
   const setUser = props.setUser
+  const initializeUsers = props.initializeUsers
 
   // Get blogs from db
   useEffect(() => {
     initialize()
   },[initialize])
+
+  // Get users from db
+  useEffect(() => {
+    initializeUsers()
+  },[initializeUsers])
 
   // Check if log info saved in local storage
   useEffect(() => {
@@ -96,35 +108,44 @@ const App = (props) => {
   if (props.user === null) {
     return (
       <div className='main'>
-        <h2>Log in to application</h2>
-        <Notification />
-        <ErrorMessage />
-        <LoginForm
-          handleLogin={handleLogin}
-          username={username}
-          password={password}
-        />
+        <Router>
+          <h2>Log in to application</h2>
+          <Notification />
+          <ErrorMessage />
+          <LoginForm
+            handleLogin={handleLogin}
+            username={username}
+            password={password}
+          />
+        </Router>
       </div>
     )
   }
 
   return (
     <div className='main'>
-      <h2>Blogs</h2>
-      <Notification />
-      <ErrorMessage />
+      <Router>
+        <h2>Blogs</h2>
+        <Notification />
+        <ErrorMessage />
 
-      <p>{props.user.name} logged in <button onClick={handleLogout}>Logout</button></p>
+        <p>{props.user.name} logged in <button onClick={handleLogout}>Logout</button></p>
 
-      <Togglable buttonLabel="New blog note" ref={blogFormRef}>
-        <BlogForm
-          addBlog={addBlog}
-          newTitle={newTitle}
-          newAuthor={newAuthor}
-          newUrl={newUrl}
+        <Route exact path="/users" render={() => <Users />} />
+        <Route exact path="/" render={() =>
+        <>
+          <Togglable buttonLabel="New blog note" ref={blogFormRef}>
+            <BlogForm
+              addBlog={addBlog}
+              newTitle={newTitle}
+              newAuthor={newAuthor}
+              newUrl={newUrl}
+            />
+          </Togglable>
+        <Blogs />
+        </>}
         />
-      </Togglable>
-      <Blogs />
+      </Router>
     </div>
   )
 }
@@ -142,7 +163,8 @@ const mapDispatchToProps = {
   createNotification,
   createErrorMsg,
   setUser,
-  createBlog
+  createBlog,
+  initializeUsers
 }
 
 const ConnectedApp = connect(
