@@ -9,8 +9,8 @@ const User = (props) => {
   else {
     return (
       <div>
-        <h2>{props.user.name}</h2>
-        <h3>Added blogs</h3>
+        <h3>{props.user.name}</h3>
+        <h4>Added blogs</h4>
         <ul>
           <li></li>
         </ul>
@@ -20,9 +20,8 @@ const User = (props) => {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log('ownProps', ownProps)
   return {
-    user: state.users.find(user => user._id === ownProps.user.id),
+    user: ownProps.user,
     users: state.users,
     blogs: state.blogs
   }

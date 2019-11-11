@@ -34,7 +34,7 @@ const App = (props) => {
 
   const userById = (id) => {
     console.log('userById', props.users.find(u => u.id === id))
-    props.users.find(u => u.id === id)
+    return props.users.find(u => u.id === id)
   }
 
   // Get blogs from db
