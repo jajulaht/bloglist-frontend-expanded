@@ -20,6 +20,7 @@ import {
 import Users from './components/Users'
 import { initializeUsers } from './reducers/usersReducer'
 import User from './components/User'
+import SingleBlog from './components/SingleBlog'
 
 const App = (props) => {
   const username = useField('text')
@@ -33,8 +34,12 @@ const App = (props) => {
   const initializeUsers = props.initializeUsers
 
   const userById = (id) => {
-    console.log('userById', props.users.find(u => u.id === id))
     return props.users.find(u => u.id === id)
+  }
+
+  const blogById = (id) => {
+    console.log('haku', props.blogs.find(b => b.id === id))
+    return props.blogs.find(b => b.id === id)
   }
 
   // Get blogs from db
@@ -139,6 +144,7 @@ const App = (props) => {
 
         <Route exact path="/users" render={() => <Users />} />
         <Route exact path="/users/:id" render={({ match }) => <User user={userById(match.params.id)} />} />
+        <Route exact path="/blogs/:id" render={({ match }) => <SingleBlog blog={blogById(match.params.id)} />} />
         <Route exact path="/" render={() =>
           <>
             <Togglable buttonLabel="New blog note" ref={blogFormRef}>
