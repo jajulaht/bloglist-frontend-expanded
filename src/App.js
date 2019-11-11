@@ -19,6 +19,7 @@ import {
 } from 'react-router-dom'
 import Users from './components/Users'
 import { initializeUsers } from './reducers/usersReducer'
+import User from './components/User'
 
 const App = (props) => {
   const username = useField('text')
@@ -30,6 +31,11 @@ const App = (props) => {
   const initialize = props.initializeBlogs
   const setUser = props.setUser
   const initializeUsers = props.initializeUsers
+
+  const userById = (id) => {
+    console.log('userById', props.users.find(u => u.id === id))
+    props.users.find(u => u.id === id)
+  }
 
   // Get blogs from db
   useEffect(() => {
@@ -132,18 +138,19 @@ const App = (props) => {
         <p>{props.user.name} logged in <button onClick={handleLogout}>Logout</button></p>
 
         <Route exact path="/users" render={() => <Users />} />
+        <Route exact path="/users/:id" render={({ match }) => <User user={userById(match.params.id)} />} />
         <Route exact path="/" render={() =>
-        <>
-          <Togglable buttonLabel="New blog note" ref={blogFormRef}>
-            <BlogForm
-              addBlog={addBlog}
-              newTitle={newTitle}
-              newAuthor={newAuthor}
-              newUrl={newUrl}
-            />
-          </Togglable>
-        <Blogs />
-        </>}
+          <>
+            <Togglable buttonLabel="New blog note" ref={blogFormRef}>
+              <BlogForm
+                addBlog={addBlog}
+                newTitle={newTitle}
+                newAuthor={newAuthor}
+                newUrl={newUrl}
+              />
+            </Togglable>
+          <Blogs />
+          </>}
         />
       </Router>
     </div>
@@ -155,6 +162,7 @@ const mapStateToProps = (state) => {
     blogs: state.blogs,
     notification: state.notification,
     user: state.user,
+    users: state.users
   }
 }
 

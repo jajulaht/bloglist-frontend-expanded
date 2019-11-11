@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 const Users = (props) => {
   if (props.users.length === null) {
@@ -10,7 +11,7 @@ const Users = (props) => {
     console.log('users', props.users)
     const rows = () => props.users.map(user =>
       <tr key={user.id}>
-        <td>{user.name}</td>
+        <td><Link to={`/users/${user.id}`}>{user.name}</Link></td>
         <td>{user.blogs.length}</td>
       </tr>
     )
