@@ -1,7 +1,6 @@
 import React from 'react'
 import Blog from './Blog'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 
 const Blogs = (props) => {
   if (props.blogs.length === null) {
@@ -13,17 +12,7 @@ const Blogs = (props) => {
     // Map blogs array data to rows
     const rows = () => arrangedBlogs.map(blog =>
       <React.Fragment key={blog.id}>
-        <Link to={`/blogs/${blog.id}`}>
-          <Blog
-            title={blog.title}
-            author={blog.author}
-            url={blog.url}
-            likes={blog.likes}
-            name={blog.user.name}
-            id={blog.id}
-            username={blog.user.username}
-            user={props.user}
-          /></Link><br />
+        <Blog blog={blog} />
       </React.Fragment>
     )
     return (

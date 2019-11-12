@@ -21,6 +21,7 @@ import Users from './components/Users'
 import { initializeUsers } from './reducers/usersReducer'
 import User from './components/User'
 import SingleBlog from './components/SingleBlog'
+import Menu from './components/Menu'
 
 const App = (props) => {
   const username = useField('text')
@@ -38,7 +39,6 @@ const App = (props) => {
   }
 
   const blogById = (id) => {
-    console.log('haku', props.blogs.find(b => b.id === id))
     return props.blogs.find(b => b.id === id)
   }
 
@@ -84,12 +84,6 @@ const App = (props) => {
     }
   }
 
-  // eslint-disable-next-line no-unused-vars
-  const handleLogout = (event) => {
-    window.localStorage.removeItem('loggedBlogappUser')
-    setUser(null)
-  }
-
   // Add a blog, change response's user to match blogs state
   const addBlog = (event) => {
     event.preventDefault()
@@ -116,7 +110,7 @@ const App = (props) => {
   }
 
   // Conditional rendering
-  if (props.user === null) {
+  if (props.user.length === 0) {
     return (
       <div className='main'>
         <Router>
@@ -136,11 +130,10 @@ const App = (props) => {
   return (
     <div className='main'>
       <Router>
-        <h2>Blogs</h2>
+        <Menu />
+        <h2>Blog app</h2>
         <Notification />
         <ErrorMessage />
-
-        <p>{props.user.name} logged in <button onClick={handleLogout}>Logout</button></p>
 
         <Route exact path="/users" render={() => <Users />} />
         <Route exact path="/users/:id" render={({ match }) => <User user={userById(match.params.id)} />} />
