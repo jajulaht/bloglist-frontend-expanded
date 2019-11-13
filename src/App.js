@@ -15,13 +15,14 @@ import { setUser } from './reducers/userReducer'
 import { connect } from 'react-redux'
 import {
   BrowserRouter as Router,
-  Route, Link, Redirect, withRouter
+  Route
 } from 'react-router-dom'
 import Users from './components/Users'
 import { initializeUsers } from './reducers/usersReducer'
 import User from './components/User'
 import SingleBlog from './components/SingleBlog'
 import Menu from './components/Menu'
+import { initializeComments } from './reducers/commentReducer'
 
 const App = (props) => {
   const username = useField('text')
@@ -33,6 +34,7 @@ const App = (props) => {
   const initialize = props.initializeBlogs
   const setUser = props.setUser
   const initializeUsers = props.initializeUsers
+  const initializeComments = props.initializeComments
 
   const userById = (id) => {
     return props.users.find(u => u.id === id)
@@ -51,6 +53,11 @@ const App = (props) => {
   useEffect(() => {
     initializeUsers()
   },[initializeUsers])
+
+  // Get comments from db
+  useEffect(() => {
+    initializeComments()
+  },[initializeComments])
 
   // Check if log info saved in local storage
   useEffect(() => {
@@ -171,7 +178,8 @@ const mapDispatchToProps = {
   createErrorMsg,
   setUser,
   createBlog,
-  initializeUsers
+  initializeUsers,
+  initializeComments
 }
 
 const ConnectedApp = connect(

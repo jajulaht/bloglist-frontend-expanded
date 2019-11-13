@@ -5,11 +5,11 @@ import {
   likeOf, deleteBlog
 } from '../reducers/blogReducer'
 import { createNotification } from '../reducers/notificationReducer'
+import Comments from './Comments'
 
 const SingleBlog = (props) => {
   const updateBlogLikes = (searchId) => {
     const blogToUpdate = props.blogs.find(({ id }) => id === searchId)
-    console.log('haettu', blogToUpdate)
     const newLikes = blogToUpdate.likes + 1
     const changedBlog = { ...blogToUpdate, likes: newLikes }
     try {
@@ -26,7 +26,6 @@ const SingleBlog = (props) => {
     return <div>Loading...</div>
   }
   else {
-    console.log('blogi', props.blog)
     return (
       <div>
         <h3>{props.blog.title}</h3>
@@ -38,6 +37,8 @@ const SingleBlog = (props) => {
           </button><br />
           added by {props.blog.user.name}
         </p>
+        <h4>Comments</h4>
+        <Comments ids={props.blog.comments} />
       </div>
     )
   }
@@ -47,7 +48,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     blog: ownProps.blog,
     users: state.users,
-    blogs: state.blogs
+    blogs: state.blogs,
+    comments: state.comments
   }
 }
 

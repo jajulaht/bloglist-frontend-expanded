@@ -17,7 +17,7 @@ const Blogs = (props) => {
     )
     return (
       <div className='bloglist'>
-        {rows()}
+        { rows() }
       </div>
     )
   }
