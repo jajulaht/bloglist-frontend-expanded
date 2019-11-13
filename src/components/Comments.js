@@ -3,30 +3,43 @@ import { connect } from 'react-redux'
 
 const Comments = (props) => {
   console.log('props', props)
-  const commentById = (id) => {
-    console.log('mistä lähetään', props.ids)
-    console.log('haettava id', id)
-    console.log('mistä haetaan', props.comments)
-    console.log('haku idllä', props.comments.find(c => c.id === id))
-    return props.comments.find(c => c.id === id)
+
+  const rows = () => props.comments.map(comment => {
+    return ( <li key={comment.id}>{ comment.content }</li> )
+  })
+
+  if (props.comments === undefined) {
+    return null
   }
-
-  const rows = () => props.ids.map(commentId =>
-    <li key={ commentId }>{ commentById(commentId).content }</li>
-  )
-
-  return (
-    <ul>
-      { rows() }
-    </ul>
-  )
+  else if (props.comments.length === 0) {
+    return (
+      <div>
+        <form>
+          <input></input>
+          <button>Add comment</button>
+        </form>
+        <p>No comments yet...</p>
+      </div>
+    )
+  }
+  else {
+    return (
+      <div>
+        <form>
+          <input></input>
+          <button>Add comment</button>
+        </form><br />
+        <ul>
+          { rows() }
+        </ul>
+      </div>
+    )
+  }
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    ids: ownProps.ids,
-    blogs: state.blogs,
-    comments: state.comments
+    comments: ownProps.comments,
   }
 }
 

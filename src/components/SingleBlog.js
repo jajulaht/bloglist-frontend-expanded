@@ -8,6 +8,14 @@ import { createNotification } from '../reducers/notificationReducer'
 import Comments from './Comments'
 
 const SingleBlog = (props) => {
+  console.log('single', props.blog.comments)
+  const getComments = (ids) => {
+    const comms = ids.map(searchId =>
+      props.comments.find(({ id }) => id === searchId)
+    )
+    return comms
+  }
+
   const updateBlogLikes = (searchId) => {
     const blogToUpdate = props.blogs.find(({ id }) => id === searchId)
     const newLikes = blogToUpdate.likes + 1
@@ -38,7 +46,7 @@ const SingleBlog = (props) => {
           added by {props.blog.user.name}
         </p>
         <h4>Comments</h4>
-        <Comments ids={props.blog.comments} />
+        <Comments comments={getComments(props.blog.comments)} />
       </div>
     )
   }
