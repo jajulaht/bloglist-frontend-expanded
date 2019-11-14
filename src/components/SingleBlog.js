@@ -6,9 +6,12 @@ import {
 } from '../reducers/blogReducer'
 import { createNotification } from '../reducers/notificationReducer'
 import Comments from './Comments'
+import { Button, Table } from 'semantic-ui-react'
 
 const SingleBlog = (props) => {
-
+  const likeStyle = {
+    marginLeft: 8
+  }
   const updateBlogLikes = (searchId) => {
     const blogToUpdate = props.blogs.find(({ id }) => id === searchId)
     const newLikes = blogToUpdate.likes + 1
@@ -30,14 +33,21 @@ const SingleBlog = (props) => {
     return (
       <div>
         <h3>{props.blog.title} by {props.blog.author}</h3>
-        <p>
-          <a href={props.blog.url}>{props.blog.url}</a><br />
-          {props.blog.likes} likes
-          <button onClick={() =>
-            updateBlogLikes(props.blog.id)}>Like
-          </button><br />
-          added by {props.blog.user.name}
-        </p>
+        <Table>
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell colSpan='3'><a href={props.blog.url}>{props.blog.url}</a></Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>{props.blog.likes} likes
+                <Button style={likeStyle} onClick={() =>
+                  updateBlogLikes(props.blog.id)}>Like
+                </Button>
+              </Table.Cell>
+              <Table.Cell colSpan='2'>added by {props.blog.user.name}</Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
         <h4>Comments</h4>
         <Comments id={props.blog.id} />
       </div>

@@ -5,6 +5,7 @@ import CommentForm from './CommentForm'
 import { createComment } from '../reducers/commentReducer'
 import { createNotification } from '../reducers/notificationReducer'
 import { createErrorMsg } from '../reducers/errorReducer'
+import { List } from 'semantic-ui-react'
 
 const Comments = (props) => {
   const newComment = useField('text')
@@ -30,7 +31,12 @@ const Comments = (props) => {
   }
 
   const rows = () => props.ownComments.map(comment => {
-    return ( <li key={comment.id}>{ comment.content }</li> )
+    return (
+      <List.Item key={comment.id}>
+        <List.Icon name='comment' />
+        <List.Content>{ comment.content }</List.Content>
+      </List.Item>
+    )
   })
 
   if (props.ownComments === undefined) {
@@ -54,9 +60,9 @@ const Comments = (props) => {
           addComment={addComment}
           newComment={newComment}
         /><br />
-        <ul>
+        <List>
           { rows() }
-        </ul>
+        </List>
       </div>
     )
   }

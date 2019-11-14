@@ -25,7 +25,7 @@ const Navi = (props) => {
         <Menu.Item link>
           <Link to="/users">Users</Link>
         </Menu.Item>
-        <Menu.Item link>
+        <Menu.Item position='right'>
           <span>{props.user.name} logged in <Button style={logoutStyle} onClick={handleLogout}>Logout</Button></span>
         </Menu.Item>
       </Menu>

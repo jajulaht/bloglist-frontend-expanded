@@ -39,6 +39,11 @@ const App = (props) => {
   const loginStyle = {
     marginTop: 40
   }
+  const mainColumn = {
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginTop:20
+  }
 
   const userById = (id) => {
     return props.users.find(u => u.id === id)
@@ -146,26 +151,28 @@ const App = (props) => {
       <div className='main'>
         <Router>
           <Navi />
-          <h2>Blog app</h2>
-          <Notification />
-          <ErrorMessage />
+          <div style={mainColumn}>
+            <h2>Blog app</h2>
+            <Notification />
+            <ErrorMessage />
 
-          <Route exact path="/users" render={() => <Users />} />
-          <Route exact path="/users/:id" render={({ match }) => <User user={userById(match.params.id)} />} />
-          <Route exact path="/blogs/:id" render={({ match }) => <SingleBlog blog={blogById(match.params.id)} />} />
-          <Route exact path="/" render={() =>
-            <>
-              <Togglable buttonLabel="New blog note" ref={blogFormRef}>
-                <BlogForm
-                  addBlog={addBlog}
-                  newTitle={newTitle}
-                  newAuthor={newAuthor}
-                  newUrl={newUrl}
-                />
-              </Togglable>
-            <Blogs />
-            </>}
-          />
+            <Route exact path="/users" render={() => <Users />} />
+            <Route exact path="/users/:id" render={({ match }) => <User user={userById(match.params.id)} />} />
+            <Route exact path="/blogs/:id" render={({ match }) => <SingleBlog blog={blogById(match.params.id)} />} />
+            <Route exact path="/" render={() =>
+              <>
+                <Togglable buttonLabel="New blog note" ref={blogFormRef}>
+                  <BlogForm
+                    addBlog={addBlog}
+                    newTitle={newTitle}
+                    newAuthor={newAuthor}
+                    newUrl={newUrl}
+                  />
+                </Togglable>
+              <Blogs />
+              </>}
+            />
+          </div>
         </Router>
       </div>
     </Container>
