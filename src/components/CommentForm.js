@@ -1,17 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Form, Button } from 'semantic-ui-react'
 
 const CommentForm = ({
   addComment,
   newComment
 }) => {
   return (
-    <form onSubmit={addComment}>
-      <input
-        {...newComment.omitreset}
-      />
-      <button type="submit">Add comment</button>
-    </form>
+    <Form onSubmit={addComment}>
+      <Form.Field>
+        <input
+          {...newComment.omitreset}
+        />
+        <Button type="submit">Add comment</Button>
+      </Form.Field>
+    </Form>
   )
 }
 

@@ -1,30 +1,33 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Form, Button } from 'semantic-ui-react'
+import { withRouter } from 'react-router-dom'
 
-const LoginForm = ({
+const LoginFormNoHistory = ({
   handleLogin,
   username,
   password
 }) => {
   return (
-    <form className='loginform' onSubmit={handleLogin}>
-      <div>
-      username
+    <Form onSubmit={handleLogin}>
+      <Form.Field>
+        <label>username</label>
         <input {...username.omitreset} />
-      </div>
-      <div>
-        password
+      </Form.Field>
+      <Form.Field>
+        <label>password</label>
         <input {...password.omitreset} />
-      </div>
-      <button type="submit">login</button>
-    </form>
+      </Form.Field>
+      <Button type="submit">login</Button>
+    </Form>
   )
 }
 
-LoginForm.propTypes = {
+LoginFormNoHistory.propTypes = {
   handleLogin: PropTypes.func.isRequired,
   username: PropTypes.object.isRequired,
   password: PropTypes.object.isRequired
 }
 
+const LoginForm = withRouter(LoginFormNoHistory)
 export default LoginForm

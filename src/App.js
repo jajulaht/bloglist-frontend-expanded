@@ -21,8 +21,9 @@ import Users from './components/Users'
 import { initializeUsers } from './reducers/usersReducer'
 import User from './components/User'
 import SingleBlog from './components/SingleBlog'
-import Menu from './components/Menu'
+import Navi from './components/Navi'
 import { initializeComments } from './reducers/commentReducer'
+import { Container } from 'semantic-ui-react'
 
 const App = (props) => {
   const username = useField('text')
@@ -35,6 +36,9 @@ const App = (props) => {
   const setUser = props.setUser
   const initializeUsers = props.initializeUsers
   const initializeComments = props.initializeComments
+  const loginStyle = {
+    marginTop: 40
+  }
 
   const userById = (id) => {
     return props.users.find(u => u.id === id)
@@ -120,47 +124,51 @@ const App = (props) => {
   // Conditional rendering
   if (props.user.length === 0) {
     return (
-      <div className='main'>
-        <Router>
-          <h2>Log in to application</h2>
-          <Notification />
-          <ErrorMessage />
-          <LoginForm
-            handleLogin={handleLogin}
-            username={username}
-            password={password}
-          />
-        </Router>
-      </div>
+      <Container>
+        <div style={loginStyle}>
+          <Router>
+            <h2>Log in to application</h2>
+            <Notification />
+            <ErrorMessage />
+            <LoginForm
+              handleLogin={handleLogin}
+              username={username}
+              password={password}
+            />
+          </Router>
+        </div>
+      </Container>
     )
   }
 
   return (
-    <div className='main'>
-      <Router>
-        <Menu />
-        <h2>Blog app</h2>
-        <Notification />
-        <ErrorMessage />
+    <Container>
+      <div className='main'>
+        <Router>
+          <Navi />
+          <h2>Blog app</h2>
+          <Notification />
+          <ErrorMessage />
 
-        <Route exact path="/users" render={() => <Users />} />
-        <Route exact path="/users/:id" render={({ match }) => <User user={userById(match.params.id)} />} />
-        <Route exact path="/blogs/:id" render={({ match }) => <SingleBlog blog={blogById(match.params.id)} />} />
-        <Route exact path="/" render={() =>
-          <>
-            <Togglable buttonLabel="New blog note" ref={blogFormRef}>
-              <BlogForm
-                addBlog={addBlog}
-                newTitle={newTitle}
-                newAuthor={newAuthor}
-                newUrl={newUrl}
-              />
-            </Togglable>
-          <Blogs />
-          </>}
-        />
-      </Router>
-    </div>
+          <Route exact path="/users" render={() => <Users />} />
+          <Route exact path="/users/:id" render={({ match }) => <User user={userById(match.params.id)} />} />
+          <Route exact path="/blogs/:id" render={({ match }) => <SingleBlog blog={blogById(match.params.id)} />} />
+          <Route exact path="/" render={() =>
+            <>
+              <Togglable buttonLabel="New blog note" ref={blogFormRef}>
+                <BlogForm
+                  addBlog={addBlog}
+                  newTitle={newTitle}
+                  newAuthor={newAuthor}
+                  newUrl={newUrl}
+                />
+              </Togglable>
+            <Blogs />
+            </>}
+          />
+        </Router>
+      </div>
+    </Container>
   )
 }
 

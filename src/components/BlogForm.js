@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Form, Button } from 'semantic-ui-react'
 
 const BlogForm = ({
   addBlog,
@@ -8,28 +9,28 @@ const BlogForm = ({
   newUrl
 }) => {
   return (
-    <form onSubmit={addBlog}>
+    <Form onSubmit={addBlog}>
       <h3>Create New</h3>
-      <div>
-      Title:
+      <Form.Field>
+        <label>Title:</label>
         <input
           {...newTitle.omitreset}
         />
-      </div>
-      <div>
-      Author:
+      </Form.Field>
+      <Form.Field>
+        <label>Author:</label>
         <input
           {...newAuthor.omitreset}
         />
-      </div>
-      <div>
-      Url:
+      </Form.Field>
+      <Form.Field>
+        <label>Url:</label>
         <input
           {...newUrl.omitreset}
         />
-      </div>
-      <button type="submit">Create</button>
-    </form>
+      </Form.Field>
+      <Button type="submit">Create</Button>
+    </Form>
   )
 }
 

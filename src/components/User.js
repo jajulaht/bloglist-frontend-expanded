@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Table } from 'semantic-ui-react'
 
 const User = (props) => {
   const blogFromState = (id) => {
@@ -13,17 +14,23 @@ const User = (props) => {
   }
   else {
     const rows = () => props.user.blogs.map(blog =>
-      <li key={blog.id}>
-        { blogFromState(blog.id) }
-      </li>
+      <Table.Row key={blog.id}>
+        <Table.Cell>{ blogFromState(blog.id) }</Table.Cell>
+      </Table.Row>
     )
     return (
       <div>
         <h3>{props.user.name}</h3>
-        <h4>Added blogs</h4>
-        <ul>
-          {rows()}
-        </ul>
+        <Table striped celled>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>Added blogs</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {rows()}
+          </Table.Body>
+        </Table>
       </div>
     )
   }
