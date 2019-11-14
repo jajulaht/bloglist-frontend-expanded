@@ -59,6 +59,7 @@ const App = (props) => {
     initializeComments()
   },[initializeComments])
 
+
   // Check if log info saved in local storage
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -168,7 +169,8 @@ const mapStateToProps = (state) => {
     blogs: state.blogs,
     notification: state.notification,
     user: state.user,
-    users: state.users
+    users: state.users,
+    comments: state.comments
   }
 }
 

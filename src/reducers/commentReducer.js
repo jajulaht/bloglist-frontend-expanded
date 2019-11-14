@@ -11,14 +11,16 @@ export const initializeComments = () => {
     })
   }
 }
-export const createComment = (comment, blog) => {
+export const createComment = (comment) => {
+  console.log('reducerissa', comment)
   return async dispatch => {
     const newComment = await commentService.create(comment)
     dispatch ({
       type: 'NEW_COMMENT',
       data: {
-        content: newComment,
-        blog: blog
+        content: newComment.content,
+        blog: newComment.blog,
+        id: newComment.id
       }
     })
   }
