@@ -16,7 +16,7 @@ const Blog = (props) => {
   return (
     <div className='head' style={blogTitleStyle}>
       <Link to={`/blogs/${props.blog.id}`}>
-        <span>{props.blog.title} {props.blog.author}</span>
+        <span>{props.blog.title} by {props.blog.author}</span>
       </Link>
     </div>
   )

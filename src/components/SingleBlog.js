@@ -29,7 +29,7 @@ const SingleBlog = (props) => {
   else {
     return (
       <div>
-        <h3>{props.blog.title}</h3>
+        <h3>{props.blog.title} by {props.blog.author}</h3>
         <p>
           <a href={props.blog.url}>{props.blog.url}</a><br />
           {props.blog.likes} likes
