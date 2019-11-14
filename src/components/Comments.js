@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 const Comments = (props) => {
-  console.log('props', props)
+  console.log('props.comments', props.comments)
 
   const rows = () => props.comments.map(comment => {
     return ( <li key={comment.id}>{ comment.content }</li> )
