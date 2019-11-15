@@ -1,9 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Form, Button } from 'semantic-ui-react'
-import { withRouter } from 'react-router-dom'
 
-const LoginFormNoHistory = ({
+const LoginForm = ({
   handleLogin,
   username,
   password
@@ -23,11 +22,10 @@ const LoginFormNoHistory = ({
   )
 }
 
-LoginFormNoHistory.propTypes = {
+LoginForm.propTypes = {
   handleLogin: PropTypes.func.isRequired,
   username: PropTypes.object.isRequired,
   password: PropTypes.object.isRequired
 }
 
-const LoginForm = withRouter(LoginFormNoHistory)
 export default LoginForm
