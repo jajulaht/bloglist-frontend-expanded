@@ -5,7 +5,7 @@ const config = (env, argv) => {
   console.log('argv', argv.mode)
 
   const backend_url = argv.mode === 'production'
-    ? 'https://mighty-dawn-03733.herokuapp.com/'
+    ? 'https://radiant-springs-39352.herokuapp.com'
     : 'http://localhost:3003'
 
   return {
