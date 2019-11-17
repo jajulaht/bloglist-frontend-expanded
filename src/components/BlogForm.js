@@ -15,22 +15,25 @@ const BlogForm = ({
         <Form.Field>
           <label>Title:</label>
           <input
+            data-cy="title"
             {...newTitle.omitreset}
           />
         </Form.Field>
         <Form.Field>
           <label>Author:</label>
           <input
+            data-cy="author"
             {...newAuthor.omitreset}
           />
         </Form.Field>
         <Form.Field>
           <label>Url:</label>
           <input
+            data-cy="url"
             {...newUrl.omitreset}
           />
         </Form.Field>
-        <Button type="submit">Create</Button>
+        <Button data-cy="create" type="submit">Create</Button>
       </Form>
     </Segment>
   )

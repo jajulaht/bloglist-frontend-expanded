@@ -11,13 +11,13 @@ const LoginForm = ({
     <Form onSubmit={handleLogin}>
       <Form.Field>
         <label>username</label>
-        <input {...username.omitreset} />
+        <input data-cy="username" {...username.omitreset} />
       </Form.Field>
       <Form.Field>
         <label>password</label>
-        <input {...password.omitreset} />
+        <input data-cy="password" {...password.omitreset} />
       </Form.Field>
-      <Button type="submit">login</Button>
+      <Button data-cy="submit" type="submit">login</Button>
     </Form>
   )
 }
