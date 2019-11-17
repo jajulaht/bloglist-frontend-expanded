@@ -1,5 +1,5 @@
 describe('Login page ', function() {
-  beforeEach(function() {
+  it('Reset database', function() {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
     const user = {
       name: 'Matti Luukkainen',
@@ -7,10 +7,11 @@ describe('Login page ', function() {
       password: 'salainen'
     }
     cy.request('POST', 'http://localhost:3003/api/users/', user)
-    cy.visit('http://localhost:3000')
   })
-  describe('when logged in', function() {
+
+  describe('When logged in', function() {
     beforeEach(function() {
+      cy.visit('http://localhost:3000')
       cy.get('[data-cy=username]')
         .type('mluukkai')
       cy.get('[data-cy=password]')
@@ -19,9 +20,8 @@ describe('Login page ', function() {
         .click()
     })
 
-    it('Front page can be opened', function() {
-      cy.visit('http://localhost:3000')
-      cy.contains('Log in to application')
+    it('Name of the user is shown', function() {
+      cy.contains('Matti Luukkainen logged in')
     })
 
     it('A new blog note can be created', function() {
@@ -37,6 +37,43 @@ describe('Login page ', function() {
         .click()
       cy.contains('A blog created by cypress')
       cy.contains('Author created by cypress')
+    })
+
+    it('Blog info can be opened and liked', function() {
+      cy.get('tr > :nth-child(1) > a')
+        .click()
+      cy.contains('0 likes')
+      cy.get('[data-cy=like]')
+        .click()
+      cy.contains('1 likes')
+    })
+
+    it('Blog can be commented', function() {
+      cy.get('tr > :nth-child(1) > a')
+        .click()
+      cy.contains('No comments yet...')
+      cy.get('[data-cy=commentContent]')
+        .type('A comment created by cypress')
+      cy.get('[data-cy=commentCreate]')
+        .click()
+      cy.contains('A comment created by cypress')
+    })
+
+    it('Users page can be opened and users blogs reviewed', function() {
+      cy.get('[data-cy=users]')
+        .click()
+      cy.get('[data-cy=usersHeading]')
+        .contains('Users')
+      cy.get('tr > :nth-child(1) > a')
+        .click()
+      cy.contains('A blog created by cypress')
+    })
+
+    it('User can logout', function() {
+      cy.contains('Matti Luukkainen logged in')
+      cy.get('[data-cy=logout]')
+        .click()
+      cy.contains('Log in to application')
     })
   })
 })

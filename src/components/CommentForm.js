@@ -11,10 +11,11 @@ const CommentForm = ({
       <Form onSubmit={addComment}>
         <Form.Field>
           <input
+            data-cy="commentContent"
             {...newComment.omitreset}
           />
         </Form.Field>
-        <Button type="submit">Add comment</Button>
+        <Button data-cy="commentCreate" type="submit">Add comment</Button>
       </Form>
     </Segment>
   )

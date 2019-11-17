@@ -40,7 +40,7 @@ const SingleBlog = (props) => {
             </Table.Row>
             <Table.Row>
               <Table.Cell>{props.blog.likes} likes
-                <Button style={likeStyle} onClick={() =>
+                <Button data-cy="like" style={likeStyle} onClick={() =>
                   updateBlogLikes(props.blog.id)}>Like
                 </Button>
               </Table.Cell>

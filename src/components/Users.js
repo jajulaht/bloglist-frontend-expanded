@@ -18,7 +18,7 @@ const Users = (props) => {
     )
     return (
       <div className='userlist'>
-        <h3>Users</h3>
+        <h3 data-cy="usersHeading">Users</h3>
         <Table striped celled>
           <Table.Header>
             <Table.Row>

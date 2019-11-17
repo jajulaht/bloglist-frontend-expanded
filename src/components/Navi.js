@@ -20,13 +20,13 @@ const Navi = (props) => {
     <div>
       <Menu inverted>
         <Menu.Item link>
-          <Link to="/">Blogs</Link>
+          <Link data-cy="blogs" to="/">Blogs</Link>
         </Menu.Item>
         <Menu.Item link>
-          <Link to="/users">Users</Link>
+          <Link data-cy="users" to="/users">Users</Link>
         </Menu.Item>
         <Menu.Item position='right'>
-          <span>{props.user.name} logged in <Button style={logoutStyle} onClick={handleLogout}>Logout</Button></span>
+          <span>{props.user.name} logged in <Button data-cy="logout" style={logoutStyle} onClick={handleLogout}>Logout</Button></span>
         </Menu.Item>
       </Menu>
     </div>
