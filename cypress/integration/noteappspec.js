@@ -32,11 +32,11 @@ describe('Login page ', function() {
       cy.get('[data-cy=author]')
         .type('Author created by cypress')
       cy.get('[data-cy=url]')
-        .type('Url created by cypress')
+        .type('www.yle.fi')
       cy.get('[data-cy=create]')
         .click()
       cy.contains('A blog created by cypress')
-      cy.contains('Author created by cypress')
+      cy.contains('www.yle.fi')
     })
 
     it('Blog info can be opened and liked', function() {
